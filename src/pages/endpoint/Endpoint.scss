@@ -1,0 +1,60 @@
+#Endpoint {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .close-button {
+    position: absolute;
+    right: 4px;
+    top: 120px;
+    cursor: pointer;
+  }
+
+  .flag {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 72px;
+    margin-bottom: 24px;
+  }
+
+  .detail-tile-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .detail-tile {
+    height: 51px;
+    display: flex;
+    flex-direction: row;
+
+    span {
+      margin-right: 0px;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    label {
+      left: 6px;
+      margin-top: -10px;
+    }
+
+    svg {
+      margin-left: 16px;
+    }
+  }
+
+  .title-tile {
+    display: flex;
+    flex-direction: row;
+    
+  }
+
+  .content-tile {
+    display: flex;
+    flex-direction: row;
+    justify-self: flex-end;
+    right: 0px;
+  }

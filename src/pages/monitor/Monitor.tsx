@@ -1,9 +1,11 @@
 import React, { ReactElement, useEffect, useState, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import ReactCountryFlag from 'react-country-flag'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { State as NetworkState } from '../../reducers/networkReducer'
 import Snackbar from '@material-ui/core/Snackbar'
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 import { Socket } from '../../config/Socket'
 import './Monitor.scss'
 import { ROUTES } from '../../constants'
@@ -109,11 +111,19 @@ const Endpoint: React.FC<Endpoint> = ({ url, locationEndPoint, disable }) => {
   )
 }
 
-type IsItUp = {
+export type IsItUp = {
   statusIsItUp: string
+  fromMonitor?: boolean
+  url?: string
 }
 
-const IsItUp: React.FC<IsItUp> = ({ statusIsItUp }): JSX.Element => {
+export const IsItUp: React.FC<IsItUp> = ({
+  statusIsItUp,
+  fromMonitor,
+  url,
+}): JSX.Element => {
+  const width = useWindowWidth()
+  const canNavigate = width < 1200 && fromMonitor
   const getIconByStatus = (): React.FunctionComponent<
     React.SVGProps<SVGSVGElement> & {
       title?: string | undefined
@@ -125,17 +135,71 @@ const IsItUp: React.FC<IsItUp> = ({ statusIsItUp }): JSX.Element => {
   }
 
   const Icon = getIconByStatus()
-  return <div>{<Icon />}</div>
+  return canNavigate ? (
+    <Link
+      style={{ textDecoration: 'none' }}
+      to={`${ROUTES.ENDPOINT.url}/${url}`}
+      className={'link'}
+    >
+      {<Icon />}
+    </Link>
+  ) : (
+    <div>{<Icon />}</div>
+  )
 }
 
 interface NegativeComponent extends AllNodes {
   useHashTag?: boolean
+  hasArrowAvailability?: boolean
+  hasArrowPeers?: boolean
+  url?: string
 }
 const NegativeComponent: React.FC<NegativeComponent> = ({
   useHashTag,
   disable,
+  hasArrowAvailability,
+  hasArrowPeers,
+  url,
 }) => {
-  return useHashTag ? (
+  const width = useWindowWidth()
+  let showArrow = false
+  const canNavigate = width < 1200
+
+  if (
+    (hasArrowPeers && width < 1200) ||
+    (hasArrowAvailability && width < 768)
+  ) {
+    showArrow = true
+  }
+
+  return canNavigate ? (
+    useHashTag ? (
+      <Link
+        to={`${ROUTES.ENDPOINT.url}/${url}`}
+        className={disable ? 'disableLink' : 'link'}
+        style={{ textDecoration: 'none' }}
+      >
+        # -
+      </Link>
+    ) : showArrow ? (
+      <Link
+        to={`${ROUTES.ENDPOINT.url}/${url}`}
+        className={'with-arrow'}
+        style={{ textDecoration: 'none' }}
+      >
+        <div className={disable ? 'disable' : ''}>-</div>
+        <ArrowForwardIcon style={{ color: '#D355E7' }} />
+      </Link>
+    ) : (
+      <Link
+        to={`${ROUTES.ENDPOINT.url}/${url}`}
+        className={disable ? 'disableLink' : 'link'}
+        style={{ textDecoration: 'none' }}
+      >
+        -
+      </Link>
+    )
+  ) : useHashTag ? (
     <div className={disable ? 'disable' : ''}># -</div>
   ) : (
     <div className={disable ? 'disable' : ''}>-</div>
@@ -150,12 +214,24 @@ const TypeNode: React.FC<TypeNode> = ({ disable, textType }) => {
   return <div className={disable ? 'disable' : ''}>{textType}</div>
 }
 
-interface Availability extends AllNodes {
+interface NavigateColumn extends AllNodes {
   text: string
+  url?: string
 }
 
-const Availability: React.FC<Availability> = ({ text, disable }) => {
-  return <div className={disable ? 'disable' : ''}>{text}</div>
+const NavigateColumn: React.FC<NavigateColumn> = ({ text, disable, url }) => {
+  const width = useWindowWidth()
+  return width < 1200 ? (
+    <Link
+      to={`${ROUTES.ENDPOINT.url}/${url}`}
+      className={disable ? 'disableLink' : 'link'}
+      style={{ textDecoration: 'none' }}
+    >
+      {text}
+    </Link>
+  ) : (
+    <div className={disable ? 'disable' : ''}>{text}</div>
+  )
 }
 
 interface StateHeight extends AllNodes {
@@ -166,7 +242,70 @@ const StateHeight: React.FC<StateHeight> = ({ text, disable }) => {
   return <div className={disable ? 'disable' : ''}>{text}</div>
 }
 
+interface Peers extends AllNodes {
+  text: number
+  url?: string
+}
+
+const Peers: React.FC<Peers> = ({ text, disable, url }) => {
+  const width = useWindowWidth()
+  return width < 768 ? (
+    <Link
+      to={`${ROUTES.ENDPOINT.url}/${url}`}
+      style={{ textDecoration: 'none' }}
+      className={'link'}
+    >
+      <div className={disable ? 'disable' : ''}>{text}</div>
+    </Link>
+  ) : width < 1200 ? (
+    <Link
+      to={`${ROUTES.ENDPOINT.url}/${url}`}
+      className={'with-arrow'}
+      style={{ textDecoration: 'none' }}
+    >
+      <div className={disable ? 'disable' : ''}>{text}</div>
+      <ArrowForwardIcon style={{ color: '#D355E7' }} />
+    </Link>
+  ) : (
+    <div className={disable ? 'disable' : ''}>{text}</div>
+  )
+}
+
+interface Availability extends AllNodes {
+  text: string
+  url?: string
+}
+
+const Availability: React.FC<Availability> = ({ text, disable, url }) => {
+  const width = useWindowWidth()
+  return width < 768 ? (
+    <Link
+      to={`${ROUTES.ENDPOINT.url}/${url}`}
+      className={'with-arrow'}
+      style={{ textDecoration: 'none' }}
+    >
+      <div className={disable ? 'disable' : ''}>{text}</div>
+      <ArrowForwardIcon style={{ color: '#D355E7' }} />
+    </Link>
+  ) : width < 1200 ? (
+    <Link
+      to={`${ROUTES.ENDPOINT.url}/${url}`}
+      style={{ textDecoration: 'none' }}
+      className={'link'}
+    >
+      <div className={disable ? 'disable' : ''}>{text}</div>
+    </Link>
+  ) : (
+    <div className={disable ? 'disable' : ''}>{text}</div>
+  )
+}
+
 const mapNodesData = (data: WSDoraData): ParsedNodes => {
+  const url = data.url
+    .replace('http://', '+')
+    .replace('https://', '&')
+    .replace(/\./g, '_')
+    .replace(/:/g, '-')
   const isPositive = (): boolean =>
     data.status === 'ok' ||
     data.status === 'stateheight stalled' ||
@@ -182,40 +321,58 @@ const mapNodesData = (data: WSDoraData): ParsedNodes => {
       />
     ),
     blockHeight: isPositive()
-      ? `#${data.height}`
+      ? (): ReactElement => (
+          <NavigateColumn text={`#${data.height}`} url={url} />
+        )
       : (): ReactElement => (
           <NegativeComponent
             useHashTag={true}
             disable={!isPositive() ? true : false}
+            url={url}
           />
         ),
     version: isPositive()
-      ? data.version
+      ? (): ReactElement => <NavigateColumn text={data.version} url={url} />
       : (): ReactElement => (
-          <NegativeComponent disable={!isPositive() ? true : false} />
+          <NegativeComponent disable={!isPositive() ? true : false} url={url} />
         ),
     type: (): ReactElement => (
       <TypeNode textType={data.type} disable={!isPositive() ? true : false} />
     ),
     peers: isPositive()
-      ? data.peers
+      ? (): ReactElement => <Peers text={data.peers} url={url} />
       : (): ReactElement => (
-          <NegativeComponent disable={!isPositive() ? true : false} />
+          <NegativeComponent
+            disable={!isPositive() ? true : false}
+            hasArrowPeers={true}
+            url={url}
+          />
         ),
     availability: isPositive()
-      ? `${data.reliability}%`
+      ? (): ReactElement => (
+          <Availability text={`${data.reliability}%`} url={url} />
+        )
       : (): ReactElement => (
-          <NegativeComponent disable={!isPositive() ? true : false} />
+          <NegativeComponent
+            disable={!isPositive() ? true : false}
+            hasArrowAvailability={true}
+            url={url}
+          />
         ),
     stateHeight: isPositive()
-      ? `#${data.stateheight}`
+      ? (): ReactElement => (
+          <NavigateColumn text={`#${data.stateheight}`} url={url} />
+        )
       : (): ReactElement => (
           <NegativeComponent
             useHashTag={true}
             disable={!isPositive() ? true : false}
+            url={url}
           />
         ),
-    isItUp: (): ReactElement => <IsItUp statusIsItUp={data.status} />,
+    isItUp: (): ReactElement => (
+      <IsItUp statusIsItUp={data.status} fromMonitor={true} url={url} />
+    ),
     chain: data.status || '',
   }
 }

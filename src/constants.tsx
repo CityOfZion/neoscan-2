@@ -113,6 +113,7 @@ export const SEARCH_TYPES = {
   BLOCK: 'BLOCK',
   TRANSACTION: 'TRANSACTION',
   MULTIPLE_RESULTS: 'MULTIPLE_RESULTS',
+  ENDPOINT: 'ENDPOINT',
 }
 
 export const ROUTES = {
@@ -184,6 +185,11 @@ export const ROUTES = {
     url: '/monitor',
     name: 'Monitor',
     renderIcon: (): React.ReactNode => <Monitor />,
+    target: '_self',
+  },
+  ENDPOINT: {
+    url: '/endpoint',
+    name: 'Endpoint',
     target: '_self',
   },
   NOT_FOUND: {

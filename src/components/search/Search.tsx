@@ -70,6 +70,10 @@ const Search: React.FC<{}> = () => {
             `${ROUTES.BLOCK.url}/${chain}/${network}/${searchValue}`,
           )
 
+        case SEARCH_TYPES.ENDPOINT:
+          dispatch(clearSearchInputState())
+          return history.push(`${ROUTES.ENDPOINT.url}/${searchValue}`)
+
         default:
           break
       }

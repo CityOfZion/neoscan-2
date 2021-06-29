@@ -95,8 +95,41 @@
   color: #7d9fb1;
 }
 
+.disableLink {
+  color: #7d9fb1;
+  cursor: pointer;
+}
+
+.disableLink:hover {
+  color: #7d9fb1;
+  cursor: pointer;
+}
+
 .cursor-pointer {
   cursor: pointer;
+}
+
+.with-arrow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-direction: row;
+  cursor: pointer;
+  color: #FFF;
+}
+
+.with-arrow:hover {
+  color: #FFF;
+}
+
+.link {
+  color: #FFF;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #FFF;
 }
 
 .copy-clipboard {

@@ -117,6 +117,21 @@
   margin-right: 20px;
 }
 
+.data-list-column {
+  padding: 0px 24px;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: var(--medium-grey-blue);
+  min-height: 25px;
+}
+
+.loading-table-row {
+  opacity: 0.75;
+}
+
 #Monitor {
   display: flex;
   flex-direction: row;

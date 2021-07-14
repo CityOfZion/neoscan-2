@@ -121,19 +121,15 @@ const Endpoint: React.FC<Endpoint> = ({ url, locationEndPoint, disable }) => {
 
 const IsItUpTooltip = withStyles((theme: Theme) => ({
   tooltip: {
-    //width: '127px',
-    //height: '32px',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: '#4cffb3',
+    border: '1px solid #4cffb3',
     backgroundColor: 'rgba(14, 25, 27, 0.73)',
-    fontSize: '15px',
+    fontSize: '13px',
   },
   arrow: {
-    //borderWidth: '1px',
-    //borderColor: '#4cffb3',
-    //borderStyle: 'solid',
     color: 'rgba(14, 25, 27, 1)',
+    '&::before': {
+      border: '1px solid #4cffb3',
+    },
   },
 }))(Tooltip)
 

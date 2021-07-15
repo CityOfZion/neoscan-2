@@ -128,6 +128,46 @@
   min-height: 25px;
 }
 
+.without-pointer-cursor {
+  cursor: default !important;
+}
+
+.list-header-and-pagination-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+
+
+.data-list > #non-link-list-cell-container {
+  padding: 0px 24px;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  min-height: 45px;
+  background-color: var(--dark-grey);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--white);
+}
+
+.data-list {
+  display: grid;
+  grid-row-gap: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .data-list > span,
+  .data-list-column,
+  .txid-index-cell {
+    font-size: 11px;
+  }
+}
+
 .loading-table-row {
   opacity: 0.75;
 }
